@@ -1,0 +1,55 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<div class="my-5">
+    <h1>アイテムサマリー</h1>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">タイトル</th>
+            <th scope="col">値段</th>
+            <th scope="col">個数</th>
+            <th scope="col">合計</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_item in object.items.all %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</td>
+            <td>{{ order_item.item.title }}</td>
+            <td>{{ order_item.item.price }}</td>
+            <td>{{ order_item.quantity }}</td>
+            <td>{{ order_item.get_total_item_price }}円</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">カートは空です</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <a class="btn btn-primary float-right" href="/">買い物を続ける</a>
+            </td>
+        </tr>
+
+        {% endfor %}
+        {% if object.get_total %}
+        <tr>
+            <td colspan="4">注文合計</td>
+            <td>{{ object.get_total }}</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <a class="btn btn-warning float-right ml-2" href="">注文する</a>
+                <a class="btn btn-primary float-right" href="/">買い物を続ける</a>
+            </td>
+        </tr>
+        {% endif %}
+
+    </tbody>
+</table>
+
+{% endblock %}

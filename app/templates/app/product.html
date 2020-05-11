@@ -1,0 +1,24 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<div class="my-5">
+    <h1>アイテム詳細</h1>
+</div>
+
+<div class="">
+    <p>title: {{ object.title }}</p>
+    <p>price: {{ object.price }}</p>
+    <p>label: {{ object.get_label_display }}</p>
+    <p>category: {{ object.get_category_display }}</p>
+    <p>description: {{ object.description }}</p>
+    <hr>
+    <div class="">
+        <a href="{{ object.get_add_to_cart_url }}">Add to cart</a>
+    </div>
+    <div class="">
+        <a href="{{ object.get_remove_from_cart_url }}">Remove from cart</a>
+    </div>
+</div>
+
+{% endblock %}

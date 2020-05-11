@@ -1,0 +1,18 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<div class="my-5">
+    <h1>アイテムリスト</h1>
+</div>
+
+{% for item in object_list %}
+    <div class="">
+        title: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+        <p>price: {{ item.price }}</p>      
+        <p>label: {{ item.get_label_display }}</p>      
+        <p>category: {{ item.get_category_display }}</p>      
+    </div>
+{% endfor %}
+
+{% endblock %}
