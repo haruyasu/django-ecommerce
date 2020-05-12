@@ -9,6 +9,9 @@
 {% for item in object_list %}
     <div class="">
         title: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+        <div class="">
+            <img src="{{ item.image.url }}" alt="" style="width: 200px;">
+        </div>
         <p>price: {{ item.price }}</p>      
         <p>label: {{ item.get_label_display }}</p>      
         <p>category: {{ item.get_category_display }}</p>      

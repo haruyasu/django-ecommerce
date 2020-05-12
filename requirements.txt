@@ -2,3 +2,5 @@ Django~=2.2.10
 django-allauth~=0.41.0
 django-widget-tweaks~=1.4.8
 stripe~=2.27.0
+django-countries~=6.1.2
+Pillow

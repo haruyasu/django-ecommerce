@@ -22,8 +22,17 @@
             <th scope="row">{{ forloop.counter }}</td>
             <td>{{ order_item.item.title }}</td>
             <td>{{ order_item.item.price }}</td>
-            <td>{{ order_item.quantity }}</td>
-            <td>{{ order_item.get_total_item_price }}円</td>
+            <td>
+                <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="mr-2">-</span></a>
+                {{ order_item.quantity }}
+                <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="ml-2">+</span></a>
+            </td>
+            <td>
+                {{ order_item.get_total_item_price }}円
+                <a href="{% url 'remove-from-cart' order_item.item.slug %}">
+                    <span class="float-right">ゴミ箱</span>
+                </a>
+            </td>
         </tr>
         {% empty %}
         <tr>
@@ -43,7 +52,7 @@
         </tr>
         <tr>
             <td colspan="5">
-                <a class="btn btn-warning float-right ml-2" href="">注文する</a>
+                <a class="btn btn-warning float-right ml-2" href="{% url 'checkout' %}">注文する</a>
                 <a class="btn btn-primary float-right" href="/">買い物を続ける</a>
             </td>
         </tr>

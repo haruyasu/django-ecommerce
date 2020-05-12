@@ -1,0 +1,24 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+
+<div class="my-5">
+    <h1>チェックアウト</h1>
+</div>
+
+<form method="POST">
+    {% csrf_token %}
+    <p>street_address: {{ form.street_address }}</p>
+    <!-- <p>apartment_address: {{ form.apartment_address }}</p>
+    <p>country: {{ form.country }}</p>
+    <p>zip: {{ form.zip }}</p>
+    <p>same_billing_address: {{ form.same_billing_address }}</p>
+    <p>save_info: {{ form.save_info }}</p>
+    <p>payment_option: {{ form.payment_option }}</p> -->
+    
+    <button class="btn btn-primary" type='submit'>Checkout</button>
+</form>
+
+
+
+{% endblock %}
