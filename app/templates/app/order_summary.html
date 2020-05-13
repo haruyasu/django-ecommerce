@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="my-5">
-    <h1>ショッピングカート</h1>
+    <h3>ショッピングカート</h3>
 </div>
 
 <div class="row order">
@@ -41,7 +41,7 @@
                 {% if object.get_total %}
                     <p>小計：<span class="font-weight-bold">{{ object.get_total }}</span>円</p>
                     <div class="mb-3">
-                        <a class="btn btn-warning" href="{% url 'checkout' %}">注文する</a>
+                        <a class="btn btn-warning" href="{% url 'payment' %}">レジに進む</a>
                     </div>
                 {% endif %}
                 <a class="btn btn-primary" href="/">買い物を続ける</a>

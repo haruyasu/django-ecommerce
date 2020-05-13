@@ -53,7 +53,7 @@ table {
 
 .btn {
     font-size: 80%;
-    border-radius: 5rem;
+    border-radius: 5px;
     font-weight: bold;
 }
 
@@ -122,7 +122,7 @@ main {
 
 /* stripe */
 .StripeElement {
-    background-color: white;
+    background-color: #F1F1F1;
     height: 40px;
     width: 100%;
     padding: 10px 12px;

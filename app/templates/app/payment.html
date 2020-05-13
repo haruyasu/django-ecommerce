@@ -3,30 +3,50 @@
 
 {% block content %}
 <div class="my-5">
-    <h1>Payment</h1>
+    <h3>注文内容を確認する</h3>
 </div>
 
-<!-- 
-参考ドキュメント
-https://stripe.com/docs/payments/accept-a-payment-charges#web
- -->
-
 <form action="." method="POST" id="payment-form">
-    {% csrf_token %}
-    <div class="form-row">
-        <label for="card-element">
-            Credit or debit card
-        </label>
-        <div id="card-element">
-            <!-- A Stripe Element will be inserted here. -->
+    <div class="row order">
+        <div class="col-md-9">
+            <div class="card px-4">
+                <div class="card-body px-2 py-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="font-weight-bold">お届け先住所</p>
+                            <p>名前：{{ user_data.first_name }} {{ user_data.last_name }}</p>
+                            <p>住所：{{ user_data.address }}</p>
+                            <p>電話番号：{{ user_data.tel }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="font-weight-bold">お支払い方法</p>
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div id="card-element"></div>
+                                <div id="card-errors" role="alert"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div id="card-errors" role="alert"></div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center px-2 py-3">
+                    <div class="mb-3">
+                        <button class="btn btn-warning" type="submit">注文を確定する</button>
+                    </div>
+                    <p class="font-weight-bold">注文内容</p>
+                    <p>商品の小計：{{ object.get_total }}円</p>
+                    <p>配送料：0円</p>
+                    <hr>
+                    <p class="font-weight-bold text-danger">ご請求金額：{{ object.get_total }}円</p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <button>Submit Payment</button>
 </form>
-
 {% endblock %}
 
 {% block extra_js %}

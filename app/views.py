@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, ListView, DetailView, View
@@ -44,17 +43,20 @@ class CheckoutView(View):
             order = Order.objects.get(user=request.user, ordered=False)
             order.billing_address = billing_address
             order.save()
-
-            messages.success(request, 'Success checkout')
             return redirect('payment')
         else:
-            messages.warning(request, 'Failed checkout')
             return redirect('checkout')
 
 
 class PaymentView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'app/payment.html')
+        order = Order.objects.get(user=request.user, ordered=False)
+        user_data = CustomUser.objects.get(id=request.user.id)
+        context = {
+            'object': order,
+            'user_data': user_data
+        }
+        return render(request, 'app/payment.html', context)
 
     def post(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -82,8 +84,6 @@ class PaymentView(View):
         order.ordered = True
         order.payment = payment
         order.save()
-
-        messages.success(request, 'Your order was successful')
         return redirect('/')
 
 
@@ -94,17 +94,11 @@ class HomeView(ListView):
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-
-        try:
-            order = Order.objects.get(user=request.user, ordered=False)
-            context = {
-                'object': order
-            }
-            return render(request, 'app/order_summary.html', context)
-        except ObjectDoesNotExist:
-            messages.error(request, 'You do not have an active order')
-            return redirect('/')
-
+        order = Order.objects.get(user=request.user, ordered=False)
+        context = {
+            'object': order
+        }
+        return render(request, 'app/order_summary.html', context)
 
 class ItemDetailView(DetailView):
     model = Item
@@ -127,16 +121,13 @@ def add_to_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
             order_item.save()
-            messages.info(request, 'This item quantity was updated')
         else:
             order.items.add(order_item)
-            messages.info(request, 'This item was added to your cart')
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
-        messages.info(request, 'This item was added to your cart')
 
     return redirect('order-summary')
 
@@ -158,13 +149,10 @@ def remove_from_cart(request, slug):
             )[0]
             order.items.remove(order_item)
             order_item.delete()
-            messages.info(request, "This item was removed from your cart.")
             return redirect("order-summary")
         else:
-            messages.info(request, "This item was not in your cart")
             return redirect("product", slug=slug)
     else:
-        messages.info(request, "You do not have an active order")
         return redirect("product", slug=slug)
 
 
@@ -189,11 +177,8 @@ def remove_single_item_from_cart(request, slug):
             else:
                 order.items.remove(order_item)
                 order_item.delete()
-            messages.info(request, "This item quantity was updated.")
             return redirect("order-summary")
         else:
-            messages.info(request, "This item was not in your cart")
             return redirect("product", slug=slug)
     else:
-        messages.info(request, "You do not have an active order")
         return redirect("product", slug=slug)

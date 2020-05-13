@@ -18,9 +18,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th class="header">所属</th>
+                        <th class="header">住所</th>
                         <td class="data">
-                            {% render_field form.department class="form-control" placeholder="所属" %}
+                            {% render_field form.address class="form-control" placeholder="住所" %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">電話番号</th>
+                        <td class="data">
+                            {% render_field form.tel class="form-control" placeholder="電話番号" %}
                         </td>
                     </tr>
                 </tbody>
