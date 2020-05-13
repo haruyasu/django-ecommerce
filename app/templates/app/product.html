@@ -9,14 +9,18 @@
         </div>
 
         <div class="col-md-6 mb-4">
-            <div class="p-4">
-                <h5>{{ object.title }}</h5>
-                <p class="mb-3">{{ object.category }}</p>
-                <hr>
-                <p>価格：<span class="text-danger font-weight-bold">{{ object.price }}円</span></p>
-                <p class="font-weight-bold">商品説明</p>
-                <p>{{ object.description|linebreaksbr }}</p>
-                <a class="btn btn-primary" href="{{ object.get_add_to_cart_url }}">カートに入れる</a>
+            <div class="card">
+                <div class="card-body px-2 py-1">
+                    <div class="p-4">
+                        <h3>{{ object.title }}</h3>
+                        <p class="mb-3">{{ object.category }}</p>
+                        <hr>
+                        <p>価格：<span class="text-danger font-weight-bold">{{ object.price }}円</span></p>
+                        <p class="font-weight-bold">商品説明</p>
+                        <p>{{ object.description|linebreaksbr }}</p>
+                        <a class="btn btn-primary" href="{{ object.get_add_to_cart_url }}">カートに入れる</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

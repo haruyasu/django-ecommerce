@@ -8,31 +8,43 @@
 
 <div class="row order">
     <div class="col-md-9 mb-5">
-        {% for order_item in object.items.all %}
-        <hr>
-        <div class="row">
-            <div class="col-md-3 text-center">
-                <img src="/{{ order_item.item.image.url }}" class="img-fluid" alt="">
-            </div>
-            <div class="col-md-6">
-                <h5>{{ order_item.item.title }}</h5>
-                <p class="mb-1">
-                    数量：
-                    <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="mr-2">-</span></a>
-                    {{ order_item.quantity }}
-                    <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="ml-2">+</span></a>
-                </p>
-                <a href="{% url 'remove-from-cart' order_item.item.slug %}">
-                    <p>削除</p>
-                </a>
-            </div>
-            <div class="col-md-3 text-right">
-                <p>価格：<span class="text-danger font-weight-bold">{{ order_item.get_total_item_price }}円</span></p>
+        <div class="card">
+            <div class="card-body px-4 py-3">
+                {% for order_item in object.items.all %}
+                    <div class="row">
+                        <div class="col-md-3 text-center">
+                            <img src="/{{ order_item.item.image.url }}" class="img-fluid" alt="{{ order_item.item.title }}">
+                        </div>
+                        <div class="col-md-6">
+                            <h5>{{ order_item.item.title }}</h5>
+                            <p class="mb-1">
+                                数量：
+                                <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="badge badge-warning">-</span></a>
+                                {{ order_item.quantity }}
+                                <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="badge badge-warning">+</span></a>
+                            </p>
+                            <a href="{% url 'remove-from-cart' order_item.item.slug %}">
+                                <span class="badge badge-danger">削除</span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <p>
+                                価格：
+                                <span class="text-danger font-weight-bold">
+                                    {{ order_item.get_total_item_price }}円
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
+
+                    {% empty %}
+                    <p class="mb-3">カートは空です</p>
+                {% endfor %}
             </div>
         </div>
-        {% empty %}
-        <p class="mb-3">カートは空です</p>
-        {% endfor %}
     </div>
 
     <div class="col-md-3">
