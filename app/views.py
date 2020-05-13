@@ -66,18 +66,18 @@ class PaymentView(View):
 
     def post(self, request, *args, **kwargs):
         order = Order.objects.get(user=request.user, ordered=False)
-        # token = request.POST.get('stripeToken')
+        token = request.POST.get('stripeToken')
         amount = int(order.get_total())
 
-        # charge = stripe.Charge.create(
-        #     amount=amount,
-        #     currency="jpy",
-        #     source=token,
-        #     description="Charge for xxx"
-        # )
-        payment = Payment()
-        # payment.stripe_charge_id = charge['id']
-        payment.stripe_charge_id = 'id_test'
+        charge = stripe.Charge.create(
+            amount=amount,
+            currency='jpy',
+            description='Example charge',
+            source=token,
+        )
+
+        payment = Payment(user=request.user)
+        payment.stripe_charge_id = charge['id']
         payment.amount = order.get_total()
         payment.save()
 

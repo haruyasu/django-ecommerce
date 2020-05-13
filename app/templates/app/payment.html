@@ -1,14 +1,35 @@
 {% extends "app/base.html" %}
+{% load static %}
 
 {% block content %}
-
 <div class="my-5">
     <h1>Payment</h1>
 </div>
 
-<form method="POST">
+<!-- 
+参考ドキュメント
+https://stripe.com/docs/payments/accept-a-payment-charges#web
+ -->
+
+<form action="." method="POST" id="payment-form">
     {% csrf_token %}
-    <button class="btn btn-primary" type='submit'>支払い</button>
+    <div class="form-row">
+        <label for="card-element">
+            Credit or debit card
+        </label>
+        <div id="card-element">
+            <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <div id="card-errors" role="alert"></div>
+    </div>
+
+    <button>Submit Payment</button>
 </form>
 
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
 {% endblock %}

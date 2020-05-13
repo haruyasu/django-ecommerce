@@ -91,8 +91,8 @@ class Order(models.Model):
     # refund_requested = models.BooleanField(default=False)
     # refund_granted = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return self.user.email
 
     def get_total(self):
         total = 0
@@ -118,8 +118,8 @@ class BilllingAddress(models.Model):
     # address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     # default = models.BooleanField(default=False)
 
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return self.user.email
 
     # class Meta:
     #     verbose_name_plural = 'Addresses'
@@ -130,5 +130,5 @@ class Payment(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self):
-    #     return self.user
+    def __str__(self):
+        return self.user.email
