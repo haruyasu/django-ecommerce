@@ -18,7 +18,7 @@
                         <p>価格：<span class="text-danger font-weight-bold">{{ object.price }}円</span></p>
                         <p class="font-weight-bold">商品説明</p>
                         <p>{{ object.description|linebreaksbr }}</p>
-                        <a class="btn btn-primary" href="{{ object.get_add_to_cart_url }}">カートに入れる</a>
+                        <a class="btn btn-primary" href="{% url 'additem' object.slug %}">カートに入れる</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.db import models
-from django.shortcuts import reverse
 
 
 class Item(models.Model):
@@ -13,21 +12,6 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
-
-    def get_absolute_url(self):
-        return reverse("product", kwargs={
-            'slug': self.slug
-        })
-
-    def get_add_to_cart_url(self):
-        return reverse("additem", kwargs={
-            'slug': self.slug
-        })
-
-    def get_remove_from_cart_url(self):
-        return reverse("removeitem", kwargs={
-            'slug': self.slug
-        })
 
 
 class OrderItem(models.Model):
