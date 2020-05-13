@@ -20,12 +20,12 @@ class Item(models.Model):
         })
 
     def get_add_to_cart_url(self):
-        return reverse("add-to-cart", kwargs={
+        return reverse("additem", kwargs={
             'slug': self.slug
         })
 
     def get_remove_from_cart_url(self):
-        return reverse("remove-from-cart", kwargs={
+        return reverse("removeitem", kwargs={
             'slug': self.slug
         })
 

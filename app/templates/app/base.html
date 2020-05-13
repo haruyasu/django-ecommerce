@@ -24,7 +24,7 @@
                         <a class="nav-link" href="{% url 'profile' %}">プロフィール</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'order-summary' %}">
+                        <a class="nav-link" href="{% url 'order' %}">
                             カート
                             <span class="badge badge-pill badge-warning">
                                 {{ request.user|cart_item_count }}

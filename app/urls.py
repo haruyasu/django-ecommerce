@@ -3,10 +3,10 @@ from app import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path('order-summary/', views.OrderView.as_view(), name='order-summary'),
+    path('order/', views.OrderView.as_view(), name='order'),
     path('product/<slug>', views.ItemDetailView.as_view(), name='product'),
-    path('add-to-cart/<slug>', views.add_to_cart, name='add-to-cart'),
-    path('remove-from-cart/<slug>', views.remove_from_cart, name='remove-from-cart'),
-    path('remove-single-item-from-cart/<slug>', views.remove_single_item_from_cart, name='remove-single-item-from-cart'),
+    path('additem/<slug>', views.addItem, name='additem'),
+    path('removeitem/<slug>', views.removeItem, name='removeitem'),
+    path('removesingleitem/<slug>', views.removeSingleItem, name='removesingleitem'),
     path('payment/', views.PaymentView.as_view(), name='payment'),
 ]

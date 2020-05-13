@@ -69,20 +69,18 @@ class PaymentView(LoginRequiredMixin, View):
         return redirect('/')
 
 
-
-
 @login_required
-def add_to_cart(request, slug):
+def addItem(request, slug):
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
         user=request.user,
         ordered=False
     )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order0 = Order.objects.filter(user=request.user, ordered=False)
 
-    if order_qs.exists():
-        order = order_qs[0]
+    if order0.exists():
+        order = order0[0]
 
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
@@ -95,18 +93,18 @@ def add_to_cart(request, slug):
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
 
-    return redirect('order-summary')
+    return redirect('order')
 
 
 @login_required
-def remove_from_cart(request, slug):
+def removeItem(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
+    order0 = Order.objects.filter(
         user=request.user,
         ordered=False
     )
-    if order_qs.exists():
-        order = order_qs[0]
+    if order0.exists():
+        order = order0[0]
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
@@ -115,22 +113,20 @@ def remove_from_cart(request, slug):
             )[0]
             order.items.remove(order_item)
             order_item.delete()
-            return redirect("order-summary")
-        else:
-            return redirect("product", slug=slug)
-    else:
-        return redirect("product", slug=slug)
+            return redirect("order")
+
+    return redirect("product", slug=slug)
 
 
 @login_required
-def remove_single_item_from_cart(request, slug):
+def removeSingleItem(request, slug):
     item = get_object_or_404(Item, slug=slug)
-    order_qs = Order.objects.filter(
+    order0 = Order.objects.filter(
         user=request.user,
         ordered=False
     )
-    if order_qs.exists():
-        order = order_qs[0]
+    if order0.exists():
+        order = order0[0]
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
@@ -143,8 +139,6 @@ def remove_single_item_from_cart(request, slug):
             else:
                 order.items.remove(order_item)
                 order_item.delete()
-            return redirect("order-summary")
-        else:
-            return redirect("product", slug=slug)
-    else:
-        return redirect("product", slug=slug)
+            return redirect("order")
+
+    return redirect("product", slug=slug)

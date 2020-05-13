@@ -19,11 +19,11 @@
                             <h5>{{ order_item.item.title }}</h5>
                             <p class="mb-1">
                                 数量：
-                                <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="badge badge-warning">-</span></a>
+                                <a href="{% url 'removesingleitem' order_item.item.slug %}"><span class="badge badge-warning">-</span></a>
                                 {{ order_item.quantity }}
-                                <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="badge badge-warning">+</span></a>
+                                <a href="{% url 'additem' order_item.item.slug %}"><span class="badge badge-warning">+</span></a>
                             </p>
-                            <a href="{% url 'remove-from-cart' order_item.item.slug %}">
+                            <a href="{% url 'removeitem' order_item.item.slug %}">
                                 <span class="badge badge-danger">削除</span>
                             </a>
                         </div>
