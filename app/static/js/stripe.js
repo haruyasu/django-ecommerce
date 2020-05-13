@@ -1,4 +1,5 @@
-//https://stripe.com/docs/payments/accept-a-payment-charges#web
+// Stripe公式ドキュメント
+// https://stripe.com/docs/payments/accept-a-payment-charges#web
 
 const stripe = Stripe('pk_test_0Lcoq8ulQLpNxHMEiIMDeqvy00BP8yheFf');
 const elements = stripe.elements();
@@ -11,9 +12,7 @@ const style = {
 };
 
 const card = elements.create('card', { style: style });
-
 card.mount('#card-element');
-
 card.addEventListener('change', function (event) {
     const displayError = document.getElementById('card-errors');
     if (event.error) {
@@ -44,6 +43,5 @@ function stripeTokenHandler(token) {
     hiddenInput.setAttribute('name', 'stripeToken');
     hiddenInput.setAttribute('value', token.id);
     form.appendChild(hiddenInput);
-
     form.submit();
 }
