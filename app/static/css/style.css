@@ -55,7 +55,6 @@ table {
     font-size: 80%;
     border-radius: 5rem;
     font-weight: bold;
-    transition: all 0.2s;
 }
 
 .profile_table {
@@ -90,6 +89,38 @@ table {
     box-shadow: none;
 }
 
+/* base */
+body {
+    display: flex;
+    flex-flow: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+
+/* home */
+.itemlist img {
+    height: 150px;
+    object-fit: contain;
+}
+
+/* product */
+.product img {
+    height: 350px;
+    object-fit: contain;
+}
+
+/* order */
+.order img {
+    height: 100px;
+    object-fit: contain;
+}
+
+
+/* stripe */
 .StripeElement {
     background-color: white;
     height: 40px;

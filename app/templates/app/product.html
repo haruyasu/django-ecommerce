@@ -3,21 +3,22 @@
 {% block content %}
 
 <div class="my-5">
-    <h1>アイテム詳細</h1>
-</div>
+    <div class="row product">
+        <div class="col-md-6 mb-4 text-center">
+            <img src="/{{ object.image.url }}" class="img-fluid" alt="">
+        </div>
 
-<div class="">
-    <p>title: {{ object.title }}</p>
-    <p>price: {{ object.price }}</p>
-    <p>label: {{ object.get_label_display }}</p>
-    <p>category: {{ object.get_category_display }}</p>
-    <p>description: {{ object.description }}</p>
-    <hr>
-    <div class="">
-        <a href="{{ object.get_add_to_cart_url }}">Add to cart</a>
-    </div>
-    <div class="">
-        <a href="{{ object.get_remove_from_cart_url }}">Remove from cart</a>
+        <div class="col-md-6 mb-4">
+            <div class="p-4">
+                <h5>{{ object.title }}</h5>
+                <p class="mb-3">{{ object.category }}</p>
+                <hr>
+                <p>価格：<span class="text-danger font-weight-bold">{{ object.price }}円</span></p>
+                <p class="font-weight-bold">商品説明</p>
+                <p>{{ object.description|linebreaksbr }}</p>
+                <a class="btn btn-primary" href="{{ object.get_add_to_cart_url }}">カートに入れる</a>
+            </div>
+        </div>
     </div>
 </div>
 

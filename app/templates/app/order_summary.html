@@ -3,62 +3,51 @@
 {% block content %}
 
 <div class="my-5">
-    <h1>アイテムサマリー</h1>
+    <h1>ショッピングカート</h1>
 </div>
 
-<table>
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">タイトル</th>
-            <th scope="col">値段</th>
-            <th scope="col">個数</th>
-            <th scope="col">合計</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="row order">
+    <div class="col-md-9 mb-5">
         {% for order_item in object.items.all %}
-        <tr>
-            <th scope="row">{{ forloop.counter }}</td>
-            <td>{{ order_item.item.title }}</td>
-            <td>{{ order_item.item.price }}</td>
-            <td>
-                <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="mr-2">-</span></a>
-                {{ order_item.quantity }}
-                <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="ml-2">+</span></a>
-            </td>
-            <td>
-                {{ order_item.get_total_item_price }}円
+        <hr>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <img src="/{{ order_item.item.image.url }}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-6">
+                <h5>{{ order_item.item.title }}</h5>
+                <p class="mb-1">
+                    数量：
+                    <a href="{% url 'remove-single-item-from-cart' order_item.item.slug %}"><span class="mr-2">-</span></a>
+                    {{ order_item.quantity }}
+                    <a href="{% url 'add-to-cart' order_item.item.slug %}"><span class="ml-2">+</span></a>
+                </p>
                 <a href="{% url 'remove-from-cart' order_item.item.slug %}">
-                    <span class="float-right">ゴミ箱</span>
+                    <p>削除</p>
                 </a>
-            </td>
-        </tr>
+            </div>
+            <div class="col-md-3 text-right">
+                <p>価格：<span class="text-danger font-weight-bold">{{ order_item.get_total_item_price }}円</span></p>
+            </div>
+        </div>
         {% empty %}
-        <tr>
-            <td colspan="5">カートは空です</td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <a class="btn btn-primary float-right" href="/">買い物を続ける</a>
-            </td>
-        </tr>
-
+        <p class="mb-3">カートは空です</p>
         {% endfor %}
-        {% if object.get_total %}
-        <tr>
-            <td colspan="4">注文合計</td>
-            <td>{{ object.get_total }}</td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <a class="btn btn-warning float-right ml-2" href="{% url 'checkout' %}">注文する</a>
-                <a class="btn btn-primary float-right" href="/">買い物を続ける</a>
-            </td>
-        </tr>
-        {% endif %}
+    </div>
 
-    </tbody>
-</table>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body text-center px-2 py-3">
+                {% if object.get_total %}
+                    <p>小計：<span class="font-weight-bold">{{ object.get_total }}</span>円</p>
+                    <div class="mb-3">
+                        <a class="btn btn-warning" href="{% url 'checkout' %}">注文する</a>
+                    </div>
+                {% endif %}
+                <a class="btn btn-primary" href="/">買い物を続ける</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

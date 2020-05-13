@@ -8,16 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .forms import CheckoutForm
 from accounts.models import CustomUser
-
 from django.conf import settings
-
 import stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
-# class IndexView(LoginRequiredMixin, TemplateView):
-#     template_name = "app/index.html"
-#     login_url = '/accounts/login/'
 
 
 class CheckoutView(View):
@@ -65,6 +57,7 @@ class PaymentView(View):
         return render(request, 'app/payment.html')
 
     def post(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         order = Order.objects.get(user=request.user, ordered=False)
         token = request.POST.get('stripeToken')
         amount = int(order.get_total())
@@ -78,7 +71,7 @@ class PaymentView(View):
 
         payment = Payment(user=request.user)
         payment.stripe_charge_id = charge['id']
-        payment.amount = order.get_total()
+        payment.amount = amount
         payment.save()
 
         order_items = order.items.all()

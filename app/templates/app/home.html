@@ -2,20 +2,26 @@
 
 {% block content %}
 
-<div class="my-5">
-    <h1>アイテムリスト</h1>
-</div>
-
-{% for item in object_list %}
-    <div class="">
-        title: <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
-        <div class="">
-            <img src="{{ item.image.url }}" alt="" style="width: 200px;">
+<section class="text-center my-5">
+    <div class="row">
+        {% for item in object_list %}
+        <div class="col-lg-3 col-md-6">
+            <div class="card img-thumbnail itemlist mb-3">
+                <a href="{{ item.get_absolute_url }}">
+                    <img class="card-img-top card-thum" src="{{ item.image.url }}" alt="">
+                </a>
+                <div class="card-body text-center px-2 py-3">
+                    <p class="mb-0 text-secondary">{{ item.category }}</p>
+                    <h5 class="font-weight-bold">
+                        <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    </h5>
+                    <h4 class="font-weight-bold">
+                        {{ item.price }}円
+                    </h4>
+                </div>
+            </div>
         </div>
-        <p>price: {{ item.price }}</p>      
-        <p>label: {{ item.get_label_display }}</p>      
-        <p>category: {{ item.get_category_display }}</p>      
+        {% endfor %}
     </div>
-{% endfor %}
-
+</section>
 {% endblock %}

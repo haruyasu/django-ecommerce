@@ -20,40 +20,45 @@
                     <a class="nav-link" href="/">ホーム</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">プロフィール</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'order-summary' %}">Cart: {{ request.user|cart_item_count }}</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">プロフィール</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'order-summary' %}">Cart: {{ request.user|cart_item_count }}</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
+                    </li>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}">サインアップ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">サインアップ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
     </nav>
 
-    <div class="container">
+    <main>
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            {% endif %}
+    
+    
+            {% block content %}
+            {% endblock %}
+        </div>   
+    </main>
 
-        {% if messages %}
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
-        {% endif %}
-
-
-        {% block content %}
-        {% endblock %}
-    </div>
+    <footer class="py-2 bg-dark">
+        <p class="m-0 text-center text-white">Copyright &copy; Django Startup 2020</p>
+    </footer>
 
     {% block extra_js %}
     {% endblock %}
