@@ -90,6 +90,7 @@ table {
 }
 
 /* base */
+
 body {
     display: flex;
     flex-flow: column;
@@ -100,27 +101,29 @@ main {
     flex: 1;
 }
 
-
 /* index */
+
 .itemlist img {
     height: 150px;
     object-fit: contain;
 }
 
 /* product */
+
 .product img {
     height: 350px;
     object-fit: contain;
 }
 
 /* order */
+
 .order img {
     height: 100px;
     object-fit: contain;
 }
 
-
 /* stripe */
+
 .StripeElement {
     background-color: #F1F1F1;
     height: 40px;

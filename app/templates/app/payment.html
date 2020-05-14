@@ -38,10 +38,10 @@
                         <button class="btn btn-warning" type="submit">注文を確定する</button>
                     </div>
                     <p class="font-weight-bold">注文内容</p>
-                    <p>商品の小計：{{ object.get_total }}円</p>
+                    <p>商品の小計：{{ order.get_total }}円</p>
                     <p>配送料：0円</p>
                     <hr>
-                    <p class="font-weight-bold text-danger">ご請求金額：{{ object.get_total }}円</p>
+                    <p class="font-weight-bold text-danger">ご請求金額：{{ order.get_total }}円</p>
                 </div>
             </div>
         </div>

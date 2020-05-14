@@ -10,7 +10,7 @@
     <div class="col-md-9 mb-5">
         <div class="card">
             <div class="card-body px-4 py-3">
-                {% for order_item in object.items.all %}
+                {% for order_item in order.items.all %}
                     <div class="row">
                         <div class="col-md-3 text-center">
                             <img src="/{{ order_item.item.image.url }}" class="img-fluid" alt="{{ order_item.item.title }}">
@@ -50,8 +50,8 @@
     <div class="col-md-3">
         <div class="card">
             <div class="card-body text-center px-2 py-3">
-                {% if object.get_total %}
-                    <p>小計：<span class="font-weight-bold">{{ object.get_total }}</span>円</p>
+                {% if order.get_total %}
+                    <p>小計：<span class="font-weight-bold">{{ order.get_total }}</span>円</p>
                     <div class="mb-3">
                         <a class="btn btn-warning" href="{% url 'payment' %}">レジに進む</a>
                     </div>
