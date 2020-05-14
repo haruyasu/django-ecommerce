@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import TemplateView, ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Item, OrderItem, Order, Payment
@@ -25,11 +26,14 @@ class ThanksView(LoginRequiredMixin, TemplateView):
 
 class OrderView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        order = Order.objects.get(user=request.user, ordered=False)
-        context = {
-            'order': order
-        }
-        return render(request, 'app/order.html', context)
+        try:
+            order = Order.objects.get(user=request.user, ordered=False)
+            context = {
+                'order': order
+            }
+            return render(request, 'app/order.html', context)
+        except ObjectDoesNotExist:
+            return render(request, 'app/order.html')
 
 
 class PaymentView(LoginRequiredMixin, View):
