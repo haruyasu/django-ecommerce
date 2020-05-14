@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, View
+from django.views.generic import TemplateView, ListView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Item, OrderItem, Order, Payment
 from django.shortcuts import render, get_object_or_404, redirect
@@ -17,6 +17,10 @@ class IndexView(ListView):
 class ItemDetailView(DetailView):
     model = Item
     template_name = 'app/product.html'
+
+
+class ThanksView(LoginRequiredMixin, TemplateView):
+    template_name = 'app/thanks.html'
 
 
 class OrderView(LoginRequiredMixin, View):
@@ -68,7 +72,7 @@ class PaymentView(LoginRequiredMixin, View):
         order.ordered = True
         order.payment = payment
         order.save()
-        return redirect('/')
+        return redirect('thanks')
 
 
 @login_required
