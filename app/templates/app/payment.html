@@ -1,55 +1,116 @@
-{% extends "app/base.html" %}
-{% load static %}
-
-{% block content %}
+{% extends "app/base.html" %} {% load static %} {% block content %}
 <div class="my-5">
-    <h3>注文内容を確認する</h3>
+  <h3>注文内容を確認する</h3>
 </div>
 
-<form action="." method="POST" id="payment-form">
-    <div class="row order">
-        <div class="col-md-9">
-            <div class="card px-4">
-                <div class="card-body px-2 py-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="font-weight-bold">お届け先住所</p>
-                            <p>名前：{{ user_data.first_name }} {{ user_data.last_name }}</p>
-                            <p>住所：{{ user_data.address }}</p>
-                            <p>電話番号：{{ user_data.tel }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="font-weight-bold">お支払い方法</p>
-                            {% csrf_token %}
-                            <div class="form-row">
-                                <div id="card-element"></div>
-                                <div id="card-errors" role="alert"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<form id="payment-form">
+  {% csrf_token %}
+  <div
+    id="client-secret"
+    data-secret="{{ client_secret }}"
+    style="display: none"
+  ></div>
 
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body text-center px-2 py-3">
-                    <div class="mb-3">
-                        <button class="btn btn-warning" type="submit">注文を確定する</button>
-                    </div>
-                    <p class="font-weight-bold">注文内容</p>
-                    <p>商品の小計：{{ order.get_total }}円</p>
-                    <p>配送料：0円</p>
-                    <hr>
-                    <p class="font-weight-bold text-danger">ご請求金額：{{ order.get_total }}円</p>
-                </div>
+  <div class="row order">
+    <div class="col-md-8">
+      <div class="card px-4 mb-4">
+        <div class="card-body px-2 py-3">
+          <p class="font-weight-bold mb-3">お届け先住所</p>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="mb-1">
+                <strong>名前：</strong>{{ user_data.first_name }} {{ user_data.last_name }}
+              </p>
             </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong>住所：</strong>{{ user_data.address }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong>電話番号：</strong>{{ user_data.tel }}</p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="card px-4 mb-5">
+        <div class="card-body px-2 py-4">
+          <p class="font-weight-bold mb-4">お支払い方法</p>
+          <div id="payment-element" class="mb-3">
+            <!-- Stripeの決済要素がここに表示されます -->
+          </div>
+          <div
+            id="payment-errors"
+            style="
+              color: #dc3545;
+              margin-top: 15px;
+              display: none;
+              padding: 10px;
+              background-color: #f8d7da;
+              border: 1px solid #f5c6cb;
+              border-radius: 4px;
+            "
+          ></div>
+        </div>
+      </div>
     </div>
-</form>
-{% endblock %}
 
-{% block extra_js %}
+    <div class="col-md-4">
+      <div class="card sticky-top" style="top: 20px">
+        <div class="card-body text-center px-3 py-4">
+          <p class="font-weight-bold mb-3">注文内容</p>
+          <div class="mb-3">
+            <p class="mb-2">
+              商品の小計：<span class="font-weight-bold"
+                >{{ order.get_total }}円</span
+              >
+            </p>
+            <p class="mb-2">
+              配送料：<span class="font-weight-bold">0円</span>
+            </p>
+            <hr class="my-3" />
+            <p class="font-weight-bold text-danger h5">
+              ご請求金額：{{ order.get_total }}円
+            </p>
+          </div>
+          <button
+            class="btn btn-warning btn-lg btn-block"
+            type="submit"
+            id="submit-button"
+          >
+            <i class="fas fa-credit-card mr-2"></i>注文を確定する
+          </button>
+          <small class="text-muted mt-2 d-block">
+            このボタンを押すと注文が確定されます
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<style>
+  #payment-element {
+    min-height: 600px;
+    padding: 20px;
+  }
+
+  #payment-element .p-Element {
+    font-family: inherit;
+  }
+
+  .btn-warning:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    .sticky-top {
+      position: relative !important;
+      top: auto !important;
+    }
+  }
+</style>
+{% endblock %} {% block extra_js %}
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript" src="{% static 'js/stripe.js' %}"></script>
 {% endblock %}

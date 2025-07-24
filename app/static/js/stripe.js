@@ -1,47 +1,75 @@
-// Stripe公式ドキュメント
-// https://stripe.com/docs/payments/accept-a-payment-charges#web
+// Stripe Payment Intents API
+// https://stripe.com/docs/payments/accept-a-payment
 
-const stripe = Stripe('pk_test_xxxx');
-const elements = stripe.elements();
+const stripe = Stripe("pk_test_xxx");
 
-const style = {
-    base: {
-        fontSize: '16px',
-        color: '#32325d',
-    },
-};
+// client_secretをテンプレートから取得
+const clientSecret = document
+  .getElementById("client-secret")
+  .getAttribute("data-secret");
 
-const card = elements.create('card', { style: style });
-card.mount('#card-element');
-card.addEventListener('change', function (event) {
-    const displayError = document.getElementById('card-errors');
-    if (event.error) {
-        displayError.textContent = event.error.message;
-    } else {
-        displayError.textContent = '';
-    }
+const elements = stripe.elements({
+  clientSecret: clientSecret,
 });
 
-const form = document.getElementById('payment-form');
-form.addEventListener('submit', function (event) {
-    event.preventDefault();
+const paymentElement = elements.create("payment");
+paymentElement.mount("#payment-element");
 
-    stripe.createToken(card).then(function (result) {
-        if (result.error) {
-            const errorElement = document.getElementById('card-errors');
-            errorElement.textContent = result.error.message;
-        } else {
-            stripeTokenHandler(result.token);
-        }
+const form = document.getElementById("payment-form");
+form.addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  // 送信ボタンを無効化
+  const submitButton = document.querySelector("#submit-button");
+  submitButton.disabled = true;
+  submitButton.textContent = "処理中...";
+
+  try {
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: window.location.origin + "/thanks/",
+      },
+      redirect: "if_required",
     });
+
+    if (error) {
+      // エラー表示
+      showError(error.message);
+      submitButton.disabled = false;
+      submitButton.textContent = "注文を確定する";
+    } else if (paymentIntent && paymentIntent.status === "succeeded") {
+      // 決済成功時、サーバーに通知
+      const response = await fetch("/payment/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
+        },
+        body: JSON.stringify({
+          payment_intent_id: paymentIntent.id,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.status === "success") {
+        window.location.href = "/thanks/";
+      } else {
+        showError("決済の処理でエラーが発生しました: " + result.error);
+        submitButton.disabled = false;
+        submitButton.textContent = "注文を確定する";
+      }
+    }
+  } catch (err) {
+    showError("予期しないエラーが発生しました");
+    submitButton.disabled = false;
+    submitButton.textContent = "注文を確定する";
+  }
 });
 
-function stripeTokenHandler(token) {
-    const form = document.getElementById('payment-form');
-    const hiddenInput = document.createElement('input');
-    hiddenInput.setAttribute('type', 'hidden');
-    hiddenInput.setAttribute('name', 'stripeToken');
-    hiddenInput.setAttribute('value', token.id);
-    form.appendChild(hiddenInput);
-    form.submit();
+function showError(message) {
+  const errorElement = document.getElementById("payment-errors");
+  errorElement.textContent = message;
+  errorElement.style.display = "block";
 }
